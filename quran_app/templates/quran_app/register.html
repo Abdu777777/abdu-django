@@ -1,0 +1,51 @@
+{% extends 'quran_app/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold">إنشاء حساب معلم جديد</h3>
+                    <p class="text-muted">انضم إلينا للمساهمة في تعليم كتاب الله</p>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <h5 class="border-bottom pb-2 text-primary">المعلومات الشخصية</h5>
+                        </div>
+                        {% for field in form %}
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        
+                        <div class="col-md-12 mb-3 mt-3">
+                            <h5 class="border-bottom pb-2 text-primary">معلومات المعلم</h5>
+                        </div>
+                        {% for field in teacher_form %}
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">إنشاء الحساب</button>
+                    </div>
+                </form>
+                <div class="text-center mt-4">
+                    <p class="mb-0">لديك حساب بالفعل؟ <a href="{% url 'login' %}" class="text-primary fw-bold">سجل دخولك</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

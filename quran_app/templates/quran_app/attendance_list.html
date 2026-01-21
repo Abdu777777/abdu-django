@@ -1,0 +1,57 @@
+{% extends 'quran_app/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-calendar-check me-2 text-primary"></i>سجلات الحضور والغياب</h2>
+    <a href="{% url 'attendance_create' %}" class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i> تسجيل حضور جديد
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>التاريخ</th>
+                        <th>الطالب</th>
+                        <th>الحلقة</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.student.name }}</td>
+                        <td>{{ record.student.halaqa.name }}</td>
+                        <td>
+                            {% if record.status == 'حاضر' %}
+                                <span class="badge bg-success">{{ record.status }}</span>
+                            {% elif record.status == 'غائب' %}
+                                <span class="badge bg-danger">{{ record.status }}</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">{{ record.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'attendance_update' record.pk %}" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'attendance_delete' record.pk %}" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">لا توجد سجلات حضور حالياً</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

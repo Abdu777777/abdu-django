@@ -1,0 +1,92 @@
+{% extends 'quran_app/base.html' %}
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card bg-primary text-white p-4">
+            <h3>مرحباً بك، أ. {{ user.get_full_name|default:user.username }}</h3>
+            <p class="mb-0">أهلاً بك في لوحة التحكم الخاصة بنظام إدارة حلقات تحفيظ القرآن الكريم.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-center p-4">
+            <div class="display-4 text-primary mb-2"><i class="fas fa-users-rectangle"></i></div>
+            <h4>{{ halaqat_count }}</h4>
+            <p class="text-muted">عدد الحلقات</p>
+            <a href="{% url 'halaqa_list' %}" class="btn btn-sm btn-outline-primary">عرض الكل</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center p-4">
+            <div class="display-4 text-success mb-2"><i class="fas fa-user-graduate"></i></div>
+            <h4>{{ students_count }}</h4>
+            <p class="text-muted">عدد الطلاب</p>
+            <a href="{% url 'student_list' %}" class="btn btn-sm btn-outline-success">عرض الكل</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center p-4">
+            <div class="display-4 text-info mb-2"><i class="fas fa-calendar-check"></i></div>
+            <h4>سجل الحضور</h4>
+            <p class="text-muted">متابعة الغياب</p>
+            <a href="{% url 'attendance_list' %}" class="btn btn-sm btn-outline-info">عرض السجلات</a>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">أحدث سجلات التسميع</h5>
+                <a href="{% url 'progress_create' %}" class="btn btn-sm btn-primary">إضافة جديد</a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>الطالب</th>
+                                <th>السورة</th>
+                                <th>التقييم</th>
+                                <th>التاريخ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in recent_progress %}
+                            <tr>
+                                <td>{{ record.student.name }}</td>
+                                <td>{{ record.surah }}</td>
+                                <td><span class="badge bg-info">{{ record.grade }}</span></td>
+                                <td>{{ record.date }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">لا توجد سجلات حديثة</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">روابط سريعة</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'halaqa_create' %}" class="list-group-item list-group-item-action"><i class="fas fa-plus-circle me-2"></i> إضافة حلقة جديدة</a>
+                    <a href="{% url 'student_create' %}" class="list-group-item list-group-item-action"><i class="fas fa-user-plus me-2"></i> تسجيل طالب جديد</a>
+                    <a href="{% url 'progress_create' %}" class="list-group-item list-group-item-action"><i class="fas fa-pen-to-square me-2"></i> تسجيل تسميع</a>
+                    <a href="{% url 'attendance_create' %}" class="list-group-item list-group-item-action"><i class="fas fa-check-double me-2"></i> تسجيل حضور</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
